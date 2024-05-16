@@ -7,7 +7,7 @@ def get_neighbors(train, test_row, num_neighbors):
     distances = [(train_row, euclidean_distance(test_row[:-1], train_row[:-1])) for train_row in train]
     distances.sort(key=lambda d: d[1])
     neighbors = [distances[i][0] for i in range(num_neighbors)]
-    return torch.stack(neighbors)
+    return torch.stack(neighbors)[1:]
 
 def generate_points(n, d):
     groups = torch.rand(n)
@@ -26,6 +26,7 @@ def predict_classification(train, test_row, num_neighbors):
     prediction = max(set(predictions), key=predictions.count)
     return prediction
 
-points = generate_points(1000,3)
-prediction = predict_classification(points, points[51], 5)
-print('Expected %d, Got %d.' % (points[51][-1], prediction))
+if __name__ == "__main__":
+    points = generate_points(1000,3)
+    prediction = predict_classification(points, points[51], 5)
+    print('Expected %d, Got %d.' % (points[51][-1], prediction))
